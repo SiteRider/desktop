@@ -153,6 +153,66 @@ const globalActionsTemplate = [
     command: 'Tools:Addons',
     icon: 'chrome://browser/skin/zen-icons/extension.svg',
   },
+  {
+  label: 'Duplicate Current Tab',
+  command: (window) => {
+    const tab = window.gBrowser.selectedTab;
+    if (tab) {
+      window.BrowserDuplicateTab(tab);
+    }
+  },
+  icon: 'chrome://browser/skin/zen-icons/duplicate.svg',
+  isAvailable: (window) => isNotEmptyTab(window),
+},
+{
+  label: 'Move Current Tab to Folder',
+  command: (window) => {
+    const tab = window.gBrowser.selectedTab;
+    if (tab) {
+      // ⚠️ TODO: Replace with real Zen API
+      console.warn("Move to folder not yet implemented");
+    }
+  },
+  icon: 'chrome://browser/skin/zen-icons/folder-move.svg',
+  isAvailable: (window) => isNotEmptyTab(window),
+},
+{
+  label: 'Move Current Tab to Another Space',
+  command: (window) => {
+    const tab = window.gBrowser.selectedTab;
+    if (tab) {
+      // ⚠️ TODO: Replace with real Zen API
+      console.warn("Move to space not yet implemented");
+    }
+  },
+  icon: 'chrome://browser/skin/zen-icons/space.svg',
+  isAvailable: (window) => isNotEmptyTab(window),
+},
+{
+  label: 'Replace Pinned URL with Current',
+  command: (window) => {
+    const currentTab = window.gBrowser.selectedTab;
+    const pinned = window.gBrowser.getPinnedTabs()[0]; // Example: first pinned tab
+    if (currentTab && pinned) {
+      pinned.linkedBrowser.loadURI(currentTab.linkedBrowser.currentURI.spec);
+    }
+  },
+  icon: 'chrome://browser/skin/zen-icons/pin-replace.svg',
+  isAvailable: (window) => isNotEmptyTab(window),
+},
+{
+  label: 'Reset Pinned Tab',
+  command: (window) => {
+    const pinned = window.gBrowser.getPinnedTabs()[0];
+    if (pinned && pinned.dataset.originalUrl) {
+      pinned.linkedBrowser.loadURI(pinned.dataset.originalUrl);
+    } else {
+      console.warn("No original URL stored for this pinned tab.");
+    }
+  },
+  icon: 'chrome://browser/skin/zen-icons/pin-reset.svg',
+  isAvailable: (window) => isNotEmptyTab(window),
+},
 ];
 
 export const globalActions = globalActionsTemplate.map((action) => ({
